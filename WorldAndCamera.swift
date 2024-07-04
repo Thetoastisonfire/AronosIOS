@@ -208,7 +208,7 @@ extension GameScene {
                 }
             }
         // Makes one big node instead of lots of tiny ones for the bottom 2 rows
-            let rect = SKShapeNode(rectOf: CGSize(width: self.size.width * 10, height: pixelSize * 3))
+            let rect = SKShapeNode(rectOf: CGSize(width: self.size.width * 5, height: pixelSize * 3))
             rect.position = CGPoint(x: -(self.size.width / 2), y: (-self.size.height / 2)) // bottom left
             
             //color
@@ -241,4 +241,105 @@ extension GameScene {
         }
     }
     
-}
+    func spawnCloud() {
+        let cloud = SKShapeNode(circleOfRadius: 50)
+        cloud.fillColor = SKColor.white
+        cloud.position = CGPoint(x: self.size.width * 2, y: CGFloat.random(in: 0.1 * (self.size.height/2)...0.9 * (self.size.height/2)) - (self.size.height/2) )
+        addChild(cloud)
+        clouds.append(cloud)
+        cloud.zPosition = 2;
+        // Define the actions
+        let moveUntilAction = SKAction.moveTo(x: -self.size.width/2 - 200, duration: TimeInterval.random(in: 20.0...30.0))
+        // Run the actions sequentially
+        cloud.run(moveUntilAction) {
+            // Remove the cloud when it completes the sequence
+            cloud.removeFromParent()
+            if let index = self.clouds.firstIndex(of: cloud) {
+                self.clouds.remove(at: index)
+            }
+        }
+    }
+    
+    func backgroundHeavenStuffMovingAndStuff() {
+        let cloud = SKSpriteNode(imageNamed: "back2")
+        cloud.position = CGPoint(x: self.size.width * 2, y: -(self.size.height/2) )
+        addChild(cloud)
+        cloud.zPosition = 2;
+        // Define the actions
+        let moveUntilAction = SKAction.moveTo(x: -self.size.width/2 - 200, duration: TimeInterval.random(in: 20.0...30.0))
+        // Run the actions sequentially
+        cloud.run(moveUntilAction) {
+            // Remove the cloud when it completes the sequence
+            cloud.removeFromParent()
+        }
+    }
+    
+    func makeTheHouse() {
+        let couch = SKSpriteNode(imageNamed: "couach")
+        couch.position = CGPoint(x: size.width/2 + 200, y: (-size.height/2) )
+        couch.size = CGSize(width: 200, height: 100)
+        couch.zPosition = 0
+        addChild(couch)
+        
+        let pillar = SKSpriteNode(imageNamed: "pillar")
+        pillar.position = CGPoint(x: size.width/4, y: -(chara.position.y))
+       // pillar.size = CGSize(width: 100, height: 100)
+        pillar.zPosition = 2
+        addChild(pillar)
+        
+        
+        let topFloor = SKShapeNode(rectOf: CGSize(width: size.width, height: ((size.width + size.height) * 0.01) * 3))
+        topFloor.position = CGPoint(x: 0, y: -(chara.position.y))
+        topFloor.zPosition = 0
+        topFloor.fillColor = .white
+        topFloor.zPosition = 1
+        addChild(topFloor)
+        
+        let topFloorPhysicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size.width, height: ((size.width + size.height) * 0.01) * 3))
+        topFloorPhysicsBody.isDynamic = false
+        topFloorPhysicsBody.categoryBitMask = PhysicsCategory.wall
+        topFloorPhysicsBody.contactTestBitMask = PhysicsCategory.ball
+        topFloorPhysicsBody.collisionBitMask = PhysicsCategory.all
+        topFloorPhysicsBody.usesPreciseCollisionDetection = true
+    }
+    
+    
+    //didn't work how I wanted but could be used as like a sawblade or smth
+  /*  func multiplyCharacter(origin: CGPoint) {
+        for _ in 1...10 {
+            let chara = SKShapeNode(rect: CGRect(x: 0.5, y: 0.5, width: 120, height: 210))
+            chara.fillColor = SKColor.white
+            chara.position = origin
+            chara.isHidden = false
+
+            chara.zPosition = 0
+            addChild(chara)
+
+            // Rotate the character 90 degrees initially
+            chara.zRotation = CGFloat.pi / 2
+
+            // Create and run rotate animation
+            let rotateAnimation = SKAction.repeatForever(SKAction.rotate(byAngle: .pi * 2, duration: 2.0))
+            chara.run(rotateAnimation, withKey: "playerRotateAnimation")
+        }
+    }*/
+
+
+    
+    
+    
+    
+    //voxel code
+    func createVoxelGrid(width: CGFloat, height: CGFloat) {
+        let gridSize = CGSize(width: width, height: height)
+            for _ in 0..<Int(gridSize.height) {
+                var row: [Voxel] = []
+                for _ in 0..<Int(gridSize.width) {
+                    let voxel = Voxel(type: 0, color: .green) // Default voxel
+                    row.append(voxel)
+                }
+                voxelGrid.append(row)
+            }
+        }
+    
+}//endofclass

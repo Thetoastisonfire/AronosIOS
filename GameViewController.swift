@@ -8,13 +8,18 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import Foundation
 
 class GameViewController: UIViewController, SKViewDelegate {
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+ /*   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         updateLayout(for: size)
-    }
+    }*/
+    
+    let jimothyTimothyDebugThingie = true
+    
+    var skView: SKView!
     
     func updateLayout(for size: CGSize) {
         // Perform any necessary layout adjustments for the new size or orientation
@@ -34,11 +39,24 @@ class GameViewController: UIViewController, SKViewDelegate {
             skView.showsNodeCount = true
             skView.ignoresSiblingOrder = true
 
-            // Load GameScene from SKS file
-            guard let scene = SKScene(fileNamed: "GameScene") as? GameScene else {
-                print("Failed to load GameScene.sks")
+
+        
+//DEBUG
+    /*        // Load GameScene from SKS file
+              guard let scene = SKScene(fileNamed: "GameScene") as? GameScene else {
+             print("Failed to load GameScene.sks")
+             abort()
+             }
+        */
+        
+        
+//GAME      
+        
+            guard let scene = SKScene(fileNamed: "MenuScene") as? MenuScene else {
+                print("Failed to load MenuScene.sks")
                 abort()
             }
+    
       //  let scene = GameScene(size: view.bounds.size)
         
         // Set the scene size and scale mode
@@ -50,9 +68,8 @@ class GameViewController: UIViewController, SKViewDelegate {
 
             // Set SKView as the root view
             self.view = skView
+        
         }
-
-    
     
     
    /* override func viewDidLoad() {

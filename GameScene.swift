@@ -42,6 +42,16 @@ class GameScene: SKScene {
     
     var backgroundImage: SKSpriteNode! //background
     
+    
+    //voxel code
+    var voxelGrid: [[Voxel]] = []
+    
+    struct Voxel {
+        var type: Int
+        var color: UIColor
+    }
+    
+    
 
     var label : SKLabelNode?
 
@@ -93,6 +103,7 @@ class GameScene: SKScene {
     var chunkInfoArray: [ChunkInfo] = [] //active chunks
     var chunkPool: [SKNode] = [] //inactive chunks
     var chunkPoolRight: [SKNode] = [] //inactive chunks but on the right
+    var clouds: [SKShapeNode] = []
     
  
     let grassPalette = [SKColor(red: 85/255.0, green: 137/255.0, blue: 82/255.0, alpha: 1.0),
@@ -156,12 +167,11 @@ class GameScene: SKScene {
                 backgroundImage.position = CGPoint(x: cameraPosition.x + backgroundMove.x, y: cameraPosition.y + backgroundMove.y)
             }
         }
+        
     }
     
     override func didMove(to view: SKView) {
-        switchToHeavenEnvironment()
-   //     switchToGrasslandEnvironment() //still wayyy too many nodes
-   //     switchToNightEnvironment()     //wayyyyyyyy too many nodes
+        self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         self.createFloor() //uhhhh idk if this is right
         setupPhysics()
@@ -171,11 +181,36 @@ class GameScene: SKScene {
             setupCamera()
             setupBackground()
             setupInitialBounds()
+            
         }
-        setupBall(CGPoint(x: 0.5, y: 0.5))
+    //    setupBall(CGPoint(x: 0.5, y: 0.5))
+//DEBUG
+      //  switchToHouseEnvironment()
+        
+//GAME
+    //   initiateWakeyWakeyProtocol()
+        
+        
+
+        //   switchToHeavenEnvironment()
+       //     switchToGrasslandEnvironment() //still wayyy too many nodes
+            switchToNightEnvironment()     //wayyyyyyyy too many nodes
     }
     
+    
+    
     //modular environments
+    func initiateWakeyWakeyProtocol() {
+        let wakeUpWakeUpWakeUp = wakeyWakeyProtocol(gameScene: self)
+        currentEnvironment = wakeUpWakeUpWakeUp
+        currentEnvironment?.setupBackground()
+    }
+    func switchToHouseEnvironment() {
+        let houseEnvironment = HouseBackground(gameScene: self)
+        currentEnvironment = houseEnvironment
+        currentEnvironment?.setupBackground()
+    }
+    
     func switchToHeavenEnvironment() {
         let heavenEnvironment = HeavenBackground(gameScene: self)
         currentEnvironment = heavenEnvironment
